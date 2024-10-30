@@ -35,17 +35,17 @@ echo "$($PSQL "SELECT name FROM teams FULL JOIN games ON teams.team_id = games.w
 
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
-echo "$($PSQL "SELECT name FROM teams teamsw FULL JOIN games ON teamsw.team_id = games.winner_id FULL JOIN teams teamso on teamso.team_id = games.opponent_id WHERE round = 'Eighth-Final' AND year = 2014")"
-
+#echo "$($PSQL "SELECT teamsw.name as team_name, teamso.name as team_name FROM teams teamsw FULL JOIN games ON teamsw.team_id = games.winner_id FULL JOIN teams teamso on teamso.team_id = games.opponent_id WHERE round = 'Eighth-Final' AND year = 2014 order by team_name")"
+echo "$($PSQL "SELECT name FROM teams INNER JOIN games ON teams.team_id = games.winner_id WHERE round = 'Eighth-Final' AND year = 2014 UNION SELECT name FROM teams INNER JOIN games ON teams.team_id = games.opponent_id WHERE round = 'Eighth-Final' AND year = 2014 ORDER BY name")"
 
 echo -e "\nList of unique winning team names in the whole data set:"
-echo "$($PSQL "SELECT ")"
+echo "$($PSQL "SELECT name FROM teams INNER JOIN games ON teams.team_id = games.winner_id group by name order by name")"
 
 
 echo -e "\nYear and team name of all the champions:"
-echo "$($PSQL "SELECT ")"
+echo "$($PSQL "SELECT year, name FROM teams INNER JOIN games ON teams.team_id = games.winner_id WHERE round = 'Final' GROUP BY year, name ")"
 
 
 echo -e "\nList of teams that start with 'Co':"
-echo "$($PSQL "SELECT ")"
+echo "$($PSQL "SELECT name FROM teams where name ILIKE 'Co%'")"
 
